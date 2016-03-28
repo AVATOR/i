@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="Update data" author="brunneng" runOnChange="true">
+
+        <sql splitStatements="true" dbms="postgresql">
+            SET CONSTRAINTS ALL DEFERRED;
+        </sql>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Flow_ServiceData.csv" tableName="Flow_ServiceData" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="nID_ServiceData" type="NUMERIC"/>
+            <column name="nID_SubjectOrganDepartment" type="NUMERIC"/>
+            <column name="sID_BP" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/FlowPropertyClass.csv" tableName="FlowPropertyClass" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sPath" type="STRING"/>
+            <column name="sBeanName" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/FlowSlot.csv" tableName="FlowSlot" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sDate" type="DATETIME"/>
+            <column name="sData" type="STRING"/>
+            <column name="nID_Flow_ServiceData" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/FlowLink.csv" tableName="FlowLink" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_Flow_ServiceData" type="NUMERIC"/>
+            <column name="nID_Service" type="NUMERIC"/>
+            <column name="nID_SubjectOrganDepartment"  type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/FlowProperty.csv" tableName="FlowProperty" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_FlowPropertyClass" type="NUMERIC"/>
+            <column name="sData" type="STRING"/>
+            <column name="nID_Flow_ServiceData" type="NUMERIC"/>
+            <column name="bExclude" type="BOOLEAN" defaultValueBoolean="true"/>
+            <column name="sName" type="STRING" defaultValue=""/>
+            <column name="sRegionTime" type="STRING" defaultValue=""/>
+            <column name="saRegionWeekDay" type="STRING" defaultValue=""/>
+            <column name="sDateTimeAt" type="STRING" defaultValue=""/>
+            <column name="sDateTimeTo" type="STRING" defaultValue=""/>
+            <column name="nLen" type="NUMERIC"/>
+            <column name="sLenType" type="STRING" defaultValue=""/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/FlowSlotTicket.csv" tableName="FlowSlotTicket" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_FlowSlot" type="NUMERIC"/>
+            <column name="nID_Subject" type="NUMERIC"/>
+            <column name="nID_Task_Activiti" type="NUMERIC"/>
+            <column name="sDateStart" type="DATETIME"/>
+            <column name="sDateFinish" type="DATETIME"/>
+            <column name="sDateEdit" type="DATETIME"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/EscalationRuleFunction.csv"
+                        tableName="EscalationRuleFunction" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sBeanHandler" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/EscalationRule.csv"
+                        tableName="EscalationRule" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID_BP" type="STRING"/>
+            <column name="sID_UserTask" type="STRING"/>
+            <column name="sCondition" type="STRING"/>
+            <column name="soData" type="STRING"/>
+            <column name="sPatternFile" type="STRING"/>
+            <column name="nID_EscalationRuleFunction" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectOrganDepartment.csv"
+                        tableName="SubjectOrganDepartment" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sGroup_Activiti" type="STRING"/>
+            <column name="nID_SubjectOrgan" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData tableName="EscalationStatus" primaryKey="nID" file="data/EscalationStatus.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID" type="STRING"/>
+            <column name="sNote" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData tableName="EscalationHistory" primaryKey="nID" file="data/EscalationHistory.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sDate" type="DATETIME"/>
+            <column name="nID_Process" type="NUMERIC"/>
+            <column name="nID_Process_Root" type="NUMERIC"/>
+            <column name="nID_UserTask" type="NUMERIC"/>
+            <column name="nID_EscalationStatus" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData tableName="ActionTaskLinkType" primaryKey="nID" file="data/ActionTaskLinkType.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID" type="STRING"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+
+
+        <loadUpdateData tableName="AccessServiceRight" primaryKey="nID" file="data/AccessServiceRight.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sService" type="STRING"/>
+            <column name="saMethod" type="STRING"/>
+            <column name="sHandlerBean" type="STRING"/>
+            <column name="bDeny" type="BOOLEAN"/>
+            <column name="nOrder" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData tableName="AccessServiceRole" primaryKey="nID" file="data/AccessServiceRole.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData tableName="AccessServiceRoleRight" primaryKey="nID" file="data/AccessServiceRoleRight.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_AccessServiceRole" type="NUMERIC"/>
+            <column name="nID_AccessServiceRight" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData tableName="AccessServiceRoleRightInclude" primaryKey="nID" file="data/AccessServiceRoleRightInclude.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_AccessServiceRole" type="NUMERIC"/>
+            <column name="nID_AccessServiceRole_Include" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData tableName="AccessServiceLoginRole" primaryKey="nID" file="data/AccessServiceLoginRole.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sLogin" type="STRING"/>
+            <column name="nID_AccessServiceRole" type="NUMERIC"/>
+        </loadUpdateData>
+
+    </changeSet>    
+
+
+</databaseChangeLog>

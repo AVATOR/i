@@ -345,6 +345,7 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
+            // FIXME Maybe node_modules should be copied below as well?
             'bower_components/**/*',
             'assets/images/{,*/}*.{webp}',
             'assets/fonts/**/*',
@@ -513,6 +514,19 @@ module.exports = function (grunt) {
 
   grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
     this.async();
+  });
+
+
+  grunt.registerTask('client', function() {
+    grunt.task.run([
+      'clean:server',
+      'env:all',
+      'concurrent:server',
+      'injector',
+      'wiredep',
+      'autoprefixer',
+      'watch'
+    ]);
   });
 
   grunt.registerTask('serve', function (target) {

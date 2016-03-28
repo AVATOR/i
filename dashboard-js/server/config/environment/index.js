@@ -3,13 +3,6 @@
 var path = require('path');
 var _ = require('lodash');
 
-function requiredProcessEnv(name) {
-  if (!process.env[name]) {
-    throw new Error('You must set the ' + name + ' environment variable');
-  }
-  return process.env[name];
-}
-
 // All configurations will extend these options
 // ============================================
 var all = {
@@ -21,25 +14,21 @@ var all = {
   // Server port
   port: process.env.PORT || 9000,
 
-  // Should we populate the DB with sample data?
-  seedDB: false,
-
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
     session: process.env.SESSION_SECRET
   },
 
   activiti: {
-    prot: process.env.ACTIVITI_PROT || 'http',
-    host: process.env.ACTIVITI_HOST || 'localhost',
-    port: process.env.ACTIVITI_PORT || 8080,
-    rest: process.env.ACTIVITI_REST || 'activiti-rest/service',
-    auth: {
-      basic: process.env.ACTIVITI_AUTH_BASIC
-    },
+    prot: process.env.ACTIVITI_PROT,
+    host: process.env.ACTIVITI_HOST,
+    port: process.env.ACTIVITI_PORT,
+    rest: process.env.ACTIVITI_REST,
+    username: process.env.ACTIVITI_USER,
+    password: process.env.ACTIVITI_PASSWORD,
     session: {
-      sessionIdle: process.env.ACTIVITI_SESSION_IDLE || 60 * 8, //sec show warning
-      timeOut: process.env.ACTIVITI_SESSION_TIMEOUT || 60 * 2, //sec close session after warning
+      sessionIdle: process.env.ACTIVITI_SESSION_IDLE || 60 * 80, //sec show warning
+      timeOut: process.env.ACTIVITI_SESSION_TIMEOUT || 60 * 20, //sec close session after warning
       interval: process.env.ACTIVITI_SESSION_INTERVAL || 60 * 10 //sec update session
     }
   },
@@ -53,23 +42,15 @@ var all = {
   // List of user roles
   userRoles: ['guest', 'user', 'admin'],
 
-  // MongoDB connection options
-  mongo: {
-    options: {
-      db: {
-        safe: true
-      }
-    }
-  },
-
   request: {
-    debug: process.env.DEBUG  || false
+    debug: process.env.DEBUG
   }
 
 };
 
 // Export the config object based on the NODE_ENV
 // ==============================================
-module.exports = _.merge(
-  all,
-  require('./' + process.env.NODE_ENV + '.js') || {});
+var result = _.merge(
+  require('./' + process.env.NODE_ENV + '.js') || {},
+  all);
+module.exports = result;

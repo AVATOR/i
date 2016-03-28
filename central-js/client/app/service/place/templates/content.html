@@ -1,0 +1,14 @@
+<div class="list-group">
+
+  <place></place>
+
+  <service-auth-block
+    ng-if="authControlIsVisible()"
+    n-step="2"
+    redirect-uri="{{getRedirectUrl()}}"
+    auth-methods="{{getAuthMethods()}}">
+  </service-auth-block>
+
+  <place-edit></place-edit>
+
+</div>

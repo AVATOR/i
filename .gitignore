@@ -1,5 +1,9 @@
 *.class
 
+# NetBeans
+nbactions.xml
+nb-configuration.xml
+
 # eclipse 
 **/target 
 **/target/*
@@ -34,3 +38,17 @@ hs_err_pid*
 wf-region/src/main/resources/bpmn/autodeploy/test.bpmn
 wf-region/src/main/resources/bpmn/autodeploy/citizens_request_test_tsapko.bpmn
 wf-region/src/main/resources/bpmn/autodeploy/citizens_request_test_tsapko.bpmn.xml
+*.orig
+
+#sublime
+project.sublime-workspace
+/central-js/client/tmp/
+/central-js/client/build/
+
+
+#macos
+.DS_Store
+
+#Visual Studio Code
+.vscode
+/wf-base/fout.log

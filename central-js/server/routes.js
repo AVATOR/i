@@ -1,28 +1,42 @@
-var express = require('express');
-var router = express.Router();
+/**
+ * Main application routes
+ */
 
-router.use('/', express.static(__dirname + '../../client/build/'));
-router.use('/api/account', require('./api/account/index'));
-router.get('/api/bankid/login', require('./api/bankid/login'));
-router.use('/api/bankid/account', require('./api/bankid/account'));
-router.use('/api/documents', require('./api/documents/index'));
-router.use('/api/journal', require('./api/journal/index'));
-router.use('/api/login', require('./api/login/index'));
-router.use('/api/logout', require('./api/logout/index'));
-router.use('/api/places', require('./api/places/index'));
-router.use('/api/process-definitions', require('./api/process-definitions/index'));
-router.get('/api/process-form', require('./api/process-form/get'));
-router.post('/api/process-form', require('./api/process-form/post'));
-router.get('/api/service', require('./api/service/index'));
-router.get('/api/service/syncSubject', require('./api/service/syncSubject'));
-router.use('/api/service/documents', require('./api/service/documents'));
- //router.get('/api/service/journal', require('./api/service/documents'));//
-router.get('/api/services', require('./api/services/index'));
-router.post('/api/uploadfile', require('./api/uploadfile/post'));
+'use strict';
 
-router.use('/', function(req, res, next) {
-	res.render(__dirname + '../../client/build/index.html');
-	next();
-});
+var errors = require('./components/errors');
+var path = require('path');
 
-module.exports = router;
+module.exports = function(app) {
+
+  // Insert routes below
+  app.use('/auth', require('./auth'));
+  app.use('/api/user', require('./api/user'));
+  app.use('/api/documents', require('./api/documents'));
+  app.use('/api/journal', require('./api/journal'));
+  app.use('/api/order', require('./api/order'));
+  app.use('/api/places', require('./api/places/index'));
+  app.use('/api/process-definitions', require('./api/process-definitions/index'));
+  app.use('/api/process-form', require('./api/process-form'));
+  app.use('/api/service', require('./api/service/index'));
+  app.use('/api/service/flow', require('./api/service/flow'));
+  app.use('/api/messages', require('./api/messages/index'));
+  app.use('/api/catalog', require('./api/catalog'));
+  app.post('/api/uploadfile', require('./api/uploadfile/post'));
+  app.use('/api/countries', require('./api/countries'));
+  app.use('/api/currencies', require('./api/currencies'));
+  app.use('/api/object-customs', require('./api/object-customs'));
+  app.use('/api/subject', require('./api/subject'));
+  app.use('/api/object-earth-target', require('./api/object-earth-target'));
+  app.use('/api/markers', require('./api/markers'));
+  // All undefined asset or api routes should return a 404
+  app.route('/:url(api|auth|components|app|bower_components|assets)/*')
+   .get(errors[404]);
+
+  // All other routes should redirect to the index.html
+  var indexHtml = app.get('appPath') + '/index.html';
+  app.route('/*')
+    .get(function(req, res) {
+      res.sendFile(indexHtml);
+    });
+};

@@ -1,24 +1,26 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.activiti.redis</groupId>
-    <artifactId>wf-region-redis</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
 
     <parent>
-        <groupId>org.egov-ua</groupId>
-        <artifactId>org.egov-ua</artifactId>
+        <groupId>org.igov</groupId>
+        <artifactId>root</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
+        
     <name>iGov-UA Storage Temp</name>
+    <artifactId>db-kv-temp</artifactId>
+    <version>${igov.storage-temp.version}</version>
+    <packaging>jar</packaging>
 
     <properties>
         <spring.data.redis.version>1.2.1.RELEASE</spring.data.redis.version>
     </properties>
 
     <dependencies>
+        
         <!-- REDIS DEPENDENCIES -->
         <dependency>
             <groupId>redis.clients</groupId>

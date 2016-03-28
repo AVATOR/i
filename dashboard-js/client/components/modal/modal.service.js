@@ -24,6 +24,35 @@ angular.module('dashboardJsApp')
 
     // Public API here
     return {
+      assignTask: function(redirectCallback, message, dismissCallback) {
+        var warningModal = openModal({
+          modal: {
+            dismissable: true,
+            title: 'Успіх!',
+            html: '<strong>' + message + '</strong>',
+            buttons: [{
+              classes: 'btn-success',
+              text: 'Почати опрацювання задачі',
+              click: function(e) {
+                redirectCallback();
+                warningModal.close(e);
+              }
+            }, {
+              classes: 'btn-success',
+              text: 'Продовжити роботу з необробленими',
+              click: function(e) {
+                warningModal.close(e);
+              }
+            }]
+          }
+        }, 'modal-success');
+        warningModal.result.then(function (selectedItem) {
+          dismissCallback();
+        }, function () {
+          dismissCallback();
+        });
+
+      },
       inform: {
         info: function(callBack) {
           return function() {
@@ -48,7 +77,9 @@ angular.module('dashboardJsApp')
             }, 'modal-info');
 
             warningModal.result.then(function(event) {
-              callBack.apply(event, args);
+              if(callBack){
+                callBack.apply(event, args);
+              }
             });
           };
         },
@@ -74,9 +105,13 @@ angular.module('dashboardJsApp')
               }
             }, 'modal-success');
 
-            warningModal.result.then(function(event) {
+            warningModal.result.then(function (event) {
+              callBack.apply(event, args);
+            }, function () {
               callBack.apply(event, args);
             });
+
+
           };
         },
 
@@ -102,7 +137,9 @@ angular.module('dashboardJsApp')
             }, 'modal-danger');
 
             warningModal.result.then(function(event) {
-              callBack.apply(event, args);
+              if (callBack) {
+                callBack.apply(event, args);
+              }
             });
           };
         },
@@ -129,7 +166,9 @@ angular.module('dashboardJsApp')
             }, 'modal-warning');
 
             warningModal.result.then(function(event) {
-              callBack.apply(event, args);
+              if(callBack){
+                callBack.apply(event, args);
+              }
             });
           };
         }

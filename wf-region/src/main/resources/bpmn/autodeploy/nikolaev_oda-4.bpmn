@@ -3,8 +3,8 @@
   <process id="nikolaev_oda_4" name="Миколаєвська ОДА - Видача дозволу на переоформлення договору найму жилого приміщення державного / комунального житлового фонду" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
@@ -18,6 +18,7 @@
         <activiti:formProperty id="file8" name="Копія технічний висновок по квартирі із ЖЕК" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Яка мета або причина одержання дозволу?" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Прийняття рішення про надання послуги" activiti:candidateGroups="myk_mr_0">
@@ -27,15 +28,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Копія довідки по формі-3" type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Копії паспорта громадянина України заявника (1, 2, 10, 11 сторінок); файли можуть бути завантажені у вигляді ZIP-архіву" type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Копія заяви про згоду на зміну договору найму на ім’я міського голови від всіх зареєстрованих та проживаючих у квартирі повнолітніх членів сім’ї, а також громадян, на яких поширюється ст.71 ЖК УРСР" type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Копія документа, з якої причини переоформлюється договір найму; копія свідоцтва про смерть, копія свідоцтва про розірвання шлюбу, довідка про зміну місця проживання попереднього наймача " type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file5" name="Копія документів, що підтверджують родинний зв’язок між колишнім квартиронаймачем та заявником. ;файли можуть бути завантажені у вигляді ZIP-архіву" type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file6" name="Копія витягу із особового рахунку " type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file7" name="Копія витягу із будинкової книги " type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file8" name="Копія технічний висновок по квартирі із ЖЕК" type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="goal" name="Яка мета або причина одержання дозволу?" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="goal" name="Яка мета або причина одержання дозволу?" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Надати послугу"></activiti:value>
           <activiti:value id="reject" name="Відмовити"></activiti:value>
@@ -45,7 +38,7 @@
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <userTask id="usertask2" name="Підстави для відмови ">
+    <userTask id="usertask2" name="Підстави для відмови " activiti:candidateGroups="myk_mr_0">
       <extensionElements>
         <activiti:formProperty id="comment" name="Причина відмови " type="string" required="true"></activiti:formProperty>
       </extensionElements>
@@ -53,21 +46,13 @@
     <sequenceFlow id="flow3" name="${decide == 'reject'}" sourceRef="exclusivegateway1" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="Підготовка Витягу з рішення виконавчого комітету Миколаївської міської ради про зміну договору найму.">
+    <userTask id="usertask3" name="Підготовка Витягу з рішення виконавчого комітету Миколаївської міської ради про зміну договору найму." activiti:candidateGroups="myk_mr_0">
       <extensionElements>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Копія довідки по формі-3" type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Копії паспорта громадянина України заявника (1, 2, 10, 11 сторінок); файли можуть бути завантажені у вигляді ZIP-архіву" type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Копія заяви про згоду на зміну договору найму на ім’я міського голови від всіх зареєстрованих та проживаючих у квартирі повнолітніх членів сім’ї, а також громадян, на яких поширюється ст.71 ЖК УРСР" type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Копія документа, з якої причини переоформлюється договір найму; копія свідоцтва про смерть, копія свідоцтва про розірвання шлюбу, довідка про зміну місця проживання попереднього наймача " type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file5" name="Копія документів, що підтверджують родинний зв’язок між колишнім квартиронаймачем та заявником. ;файли можуть бути завантажені у вигляді ZIP-архіву" type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file6" name="Копія витягу із особового рахунку " type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file7" name="Копія витягу із будинкової книги " type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file8" name="Копія технічний висновок по квартирі із ЖЕК" type="file" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Яка мета або причина одержання дозволу?" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="regChanged" name="Витяг готовий?" type="enum" required="true">
           <activiti:value id="yes" name="Так, готовий"></activiti:value>
@@ -84,7 +69,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення: Видача дозволу на переоформлення договору найму жилого приміщення державного / комунального житлового фонду]]></activiti:string>
@@ -113,7 +98,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Видача дозволу на переоформлення договору найму жилого приміщення державного / комунального житлового фонду]]></activiti:string>
@@ -146,7 +131,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення: Видача дозволу на переоформлення договору найму жилого приміщення державного / комунального житлового фонду]]></activiti:string>

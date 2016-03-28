@@ -2,36 +2,20 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 
-var httpProxy = require('http-proxy');
-var config = require('../../config');
+var config = require('../../config/environment');
+var proxy = require('../../components/proxy');
 
-var Buffer = require('buffer').Buffer;
-var authBase = 'Basic ' + new Buffer(
-			config.activiti.username +
-			':' +
-			config.activiti.password)
-		.toString('base64');
-
-var proxy = httpProxy.createProxyServer({});
-
-proxy.on('proxyReq', function(proxyReq, req, res, options) {
-	proxyReq.path = req.query.url;
-	proxyReq.setHeader('Authorization', authBase);
-});
-
-proxy.on('proxyRes', function (proxyRes, req, res) {
-
-});
+var activiti = require('../../components/activiti');
 
 router.use(function(req, res, next) {
-	proxy.web(req, res, {
-		target: req.query.url,
-		secure: false
-	}, function(e) {
-		if (e) {
-
-		}
-	});
+    
+    //return './api/uploadfile?nID_Server=' + oServiceData.nID_Server + 'service/object/file/upload_file_to_redis';
+    var nID_Server = req.query.nID_Server;
+    activiti.getServerRegionHost(nID_Server, function(sHost){
+        var sURL = sHost+'/service/object/file/upload_file_to_redis';
+        console.log("sURL="+sURL);
+        proxy.upload(req, res, sURL);//req.query.url
+    });
 });
 
 module.exports = router;

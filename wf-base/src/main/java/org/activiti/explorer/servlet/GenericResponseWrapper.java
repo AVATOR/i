@@ -1,49 +1,54 @@
 package org.activiti.explorer.servlet;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
 
-public class GenericResponseWrapper extends HttpServletResponseWrapper { 
-  private ByteArrayOutputStream output;
-  private int contentLength;
-  private String contentType;
+public class GenericResponseWrapper extends HttpServletResponseWrapper {
 
-  public GenericResponseWrapper(HttpServletResponse response) { 
-    super(response);
-    output=new ByteArrayOutputStream();
-  } 
+    private ByteArrayOutputStream output;
+    private int contentLength;
+    private String contentType;
 
-  public byte[] getData() { 
-    return output.toByteArray(); 
-  } 
+    public GenericResponseWrapper(HttpServletResponse response) {
+        super(response);
+        output = new ByteArrayOutputStream();
+    }
 
-  public ServletOutputStream getOutputStream() { 
-    return new FilterServletOutputStream(output); 
-  } 
-  
-  public PrintWriter getWriter() { 
-    return new PrintWriter(getOutputStream(),true); 
-  } 
+    public byte[] getData() {
+        return output.toByteArray();
+    }
 
-  public void setContentLength(int length) { 
-    this.contentLength = length;
-    super.setContentLength(length); 
-  } 
+    @Override
+    public ServletOutputStream getOutputStream() {
+        return new FilterServletOutputStream(output);
+    }
 
-  public int getContentLength() { 
-    return contentLength; 
-  } 
+    @Override
+    public PrintWriter getWriter() {
+        return new PrintWriter(getOutputStream(), true);
+    }
 
-  public void setContentType(String type) { 
-    this.contentType = type;
-    super.setContentType(type); 
-  } 
+    public int getContentLength() {
+        return contentLength;
+    }
 
-  public String getContentType() { 
-    return contentType; 
-  } 
-} 
+    @Override
+    public void setContentLength(int length) {
+        this.contentLength = length;
+        super.setContentLength(length);
+    }
+
+    @Override
+    public String getContentType() {
+        return contentType;
+    }
+
+    @Override
+    public void setContentType(String type) {
+        this.contentType = type;
+        super.setContentType(type);
+    }
+}

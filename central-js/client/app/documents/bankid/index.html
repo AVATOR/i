@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="list-group-item"
+       ng-hide="authProcess">
+
+    <button style="display: none;"
+            class="btn btn-info"><i class="icon-door-lock"></i><span class="btn-text">igov.org.ua</span></button>
+
+    <service-auth-block
+      n-step="1"
+      redirect-uri="{{getRedirectUrl()}}"
+      auth-methods="{{getAuthMethods()}}">
+    </service-auth-block>
+
+  </div>
+  <div class="text-center"
+       ng-show="authProcess">
+    <img class="text-center section-preloader"
+         src="assets/images/loading.gif"
+         alt="Loading"/>
+  </div>
+</div>
